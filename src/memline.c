@@ -4931,14 +4931,16 @@ attention_message(
     }
     // Some of these messages are long to allow translation to
     // other languages.
-    msg_puts(_("\n(1) Another program may be editing the same file.  If this is the case,\n    be careful not to end up with two different instances of the same\n    file when making changes.  Quit, or continue with caution.\n"));
-    msg_puts(_("(2) An edit session for this file crashed.\n"));
-    msg_puts(_("    If this is the case, use \":recover\" or \"vim -r "));
-    msg_outtrans(buf->b_fname);
-    msg_puts(_("\"\n    to recover the changes (see \":help recovery\").\n"));
-    msg_puts(_("    If you did this already, delete the swap file \""));
-    msg_outtrans(fname);
-    msg_puts(_("\"\n    to avoid this message.\n"));
+    if (!getenv("VIM_SWAP_SHORT_MESSAGE")) {
+	msg_puts(_("\n(1) Another program may be editing the same file.  If this is the case,\n    be careful not to end up with two different instances of the same\n    file when making changes.  Quit, or continue with caution.\n"));
+	msg_puts(_("(2) An edit session for this file crashed.\n"));
+	msg_puts(_("    If this is the case, use \":recover\" or \"vim -r "));
+	msg_outtrans(buf->b_fname);
+	msg_puts(_("\"\n    to recover the changes (see \":help recovery\").\n"));
+	msg_puts(_("    If you did this already, delete the swap file \""));
+	msg_outtrans(fname);
+	msg_puts(_("\"\n    to avoid this message.\n"));
+    }
     cmdline_row = msg_row;
     --no_wait_return;
 }
